@@ -13,13 +13,14 @@ from models.review import Review
 from shlex import split
 
 def validate_value(value):
-     if '"' in v:
-         v = v.replace('\"', '')
-         if '_' in v: v = v.replace('_', ' ')
-     elif '.' in v:
-         v = float(v)
+     if '"' in value:
+         value = value.replace('\"', '')
+         if '_' in value: value = value.replace('_', ' ')
+     elif '.' in value:
+         value = float(value)
      else:
-         v = int(v)
+         value = int(value)
+     return value
 
 
 class HBNBCommand(cmd.Cmd):
@@ -62,13 +63,14 @@ class HBNBCommand(cmd.Cmd):
                 el = pair.split('=')
                 k, v = el[0], el[1]
 
-                if '"' in v:
+                """if '"' in v:
                     v = v.replace('\"', '')
                     if '_' in v: v = v.replace('_', ' ')
                 elif '.' in v:
                     v = float(v)
                 else:
-                    v = int(v)
+                    v = int(v)"""
+                v = validate_value(v)
                 setattr(obj, k, v)
 
             obj.save()
