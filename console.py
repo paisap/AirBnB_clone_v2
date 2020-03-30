@@ -42,7 +42,27 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            obj = eval("{}()".format(my_list[0]))
+            
+            if len(my_list) < 2:
+                raise IndexError()
+
+            obj = eval("{}()".format(my_list[0])) 
+            key_value = my_list[1:]
+
+            for pair in key_value:
+                el = pair.split('=')
+                k, v = el[0], el[1]
+
+                if '"' in v:
+                    v = v.replace('\"', '')
+                    if '_' in v:
+                        v = v.replace('_', ' ')
+                elif '.' in v: 
+                    v = float(v)
+                else:
+                    v = int(v)
+                setattr(obj, k, v)
+
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
