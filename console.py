@@ -43,8 +43,8 @@ class HBNBCommand(cmd.Cmd):
                 raise SyntaxError()
             my_list = line.split(" ")
             
-            if len(my_list) < 2:
-                raise IndexError()
+            """if len(my_list) < 2:
+                raise IndexError()"""
 
             obj = eval("{}()".format(my_list[0])) 
             key_value = my_list[1:]
