@@ -2,7 +2,7 @@
 """This is the state class"""
 from models.base_model import BaseModel, Base
 from models.city import City
-from models import storage
+import models
 from sqlalchemy import Column, Integer, String, Sequence
 from sqlalchemy.orm import relationship
 
@@ -16,8 +16,9 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=True)
     cities = relationship('City',
-        backref='state',
-        cascade='delete-orphan')
+        backref = 'state',
+        cascade = 'delete, delete-orphan'
+    )
 
     @property
     def cities(self):
@@ -25,11 +26,11 @@ class State(BaseModel, Base):
             states mapped class
         """
 
-        cities = storage.all(City)
+        cities = models.storage.all(City)
         id = self.id
         instance_list = []
 
         if cities is not None:
             for k, v in cities.items():
-                if v.id == id: list.append(v)
+                if v.id == id: instance_list.append(v)
         return instance_list
