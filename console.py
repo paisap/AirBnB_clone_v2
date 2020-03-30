@@ -53,10 +53,13 @@ class HBNBCommand(cmd.Cmd):
                 el = pair.split('=')
                 k, v = el[0], el[1]
 
-                if '"' in v: v = v.replace('\"', '')
-                elif '_' in v: v = v.replace('_', ' ')
-                elif '.' in v: v = float(v)
-                else: v = int(v)
+                if '"' in v:
+                    v = v.replace('\"', '')
+                    if '_' in v: v = v.replace('_', ' ')
+                elif '.' in v:
+                    v = float(v)
+                else:
+                    v = int(v)
                 setattr(obj, k, v)
 
             obj.save()
