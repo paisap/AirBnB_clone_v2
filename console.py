@@ -12,6 +12,15 @@ from models.place import Place
 from models.review import Review
 from shlex import split
 
+def validate_value(value):
+     if '"' in v:
+         v = v.replace('\"', '')
+         if '_' in v: v = v.replace('_', ' ')
+     elif '.' in v:
+         v = float(v)
+     else:
+         v = int(v)
+
 
 class HBNBCommand(cmd.Cmd):
     """this class is entry point of the command interpreter
