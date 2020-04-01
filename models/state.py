@@ -7,7 +7,7 @@ from sqlalchemy import Column, Integer, String, Sequence
 from sqlalchemy.orm import relationship
 import os
 
-storage = os.getenv(HBNB_TYPE_STORAGE)
+storage = os.environ.get("HBNB_TYPE_STORAGE")
 
 class State(BaseModel, Base):
     """This is the class for State
