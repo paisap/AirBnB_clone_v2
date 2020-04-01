@@ -19,16 +19,15 @@ class State(BaseModel, Base):
         cities = relationship('City', backref='state', cascade='delete')
     else:
         name = ""
-
-    @property
-    def cities(self):
-        """ get instances with the same id from
+        @property
+        def cities(self):
+            """ get instances with the same id from
             states mapped class
-        """
-        cities = models.storage.all(City)
-        instance_list = []
-        if cities is not None:
-            for k, v in cities.items():
-                if v.id == self.id:
-                    instance_list.append(v)
-        return instance_list
+            """
+            cities = models.storage.all(City)
+            instance_list = []
+            if cities is not None:
+                for k, v in cities.items():
+                    if v.id == self.id:
+                        instance_list.append(v)
+            return instance_list

@@ -36,14 +36,12 @@ class DBStorage:
         list_aux = {}
         aux_classes = {'Place': Place, 'City': City, 'Amenity': Amenity,
                        'Review': Review, 'State': State, 'User': User}
-        Session = sessionmaker(bind=self.__engine)
-        self.__session = Session()
         if cls:
             for row in self.__session.query(aux_classes[cls]):
                 key = "{}.{}".format(row.__class__.__name__, row.id)
                 list_aux[key] = row
         else:
-            for rows in classes:
+            for rows in aux_classes:
                 for row in self.__session.query(aux_classes[rows]):
                     key = "{}.{}".format(row.__class__.__name__, row.id)
                 list_aux[key] = row
