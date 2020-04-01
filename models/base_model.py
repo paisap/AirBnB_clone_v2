@@ -73,7 +73,8 @@ class BaseModel:
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
-        my_dict.pop('_sa_instance_state', None)
+        if "_sa_instance_state" in list_aux:
+            del list_aux['_sa_instance_state']
         return my_dict
 
     def delete(self):

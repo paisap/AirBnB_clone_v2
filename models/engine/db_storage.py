@@ -45,7 +45,8 @@ class DBStorage:
                 for row in self.__session.query(aux_classes[rows]):
                     key = "{}.{}".format(row.__class__.__name__, row.id)
                     list_aux[key] = row
-        list_aux.pop('_sa_instance_state', None)
+        if "_sa_instance_state" in list_aux:
+            del list_aux['_sa_instance_state']
         return list_aux
 
     def new(self, obj):
