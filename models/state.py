@@ -5,9 +5,7 @@ from models.city import City
 import models
 from sqlalchemy import Column, Integer, String, Sequence
 from sqlalchemy.orm import relationship
-import os
 
-storage = os.environ.get("HBNB_TYPE_STORAGE")
 
 class State(BaseModel, Base):
     """This is the class for State
@@ -15,25 +13,21 @@ class State(BaseModel, Base):
         name: input name
     """
     __tablename__ = 'states'
-
-    if storage == 'db':
+    if os.environ.get("HBNB_TYPE_STORAGE") == "db":
         name = Column(String(128), nullable=False)
-        cities = relationship('City',
-            backref = 'state',
-            cascade = 'all, delete-orphan'
-        )
-
+        cities = relationship('City', backref='state', cascade='delete')
     else:
         name = ""
-        @property
-        def cities(self):
-            """ get instances with the same id from 
-                states mapped class
-            """
 
-            if cities is not None:
-                id = self.id
-                instance_list = []
-                for k, v in cities.items():
-                    if v.id == id: instance_list.append(v)
-            return instance_list
+    @property
+    def cities(self):
+        """ get instances with the same id from
+            states mapped class
+        """
+        cities = models.storage.all(City)
+        instance_list = []
+        if cities is not None:
+            for k, v in cities.items():
+                if v.id == self.id:
+                    instance_list.append(v)
+        return instance_list
