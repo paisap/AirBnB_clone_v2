@@ -34,8 +34,8 @@ class DBStorage:
         """ class all
         """
         list_aux = {}
-        aux_classes = {'Place': Place, 'City': City, 'Amenity': Amenity,
-                       'Review': Review, 'State': State, 'User': User}
+        aux_classes = {'State': State, 'Place': Place, 'City': City,
+                       'Amenity': Amenity, 'Review': Review, 'User': User}
         if cls:
             for row in self.__session.query(aux_classes[cls]):
                 key = "{}.{}".format(row.__class__.__name__, row.id)
@@ -44,7 +44,7 @@ class DBStorage:
             for rows in aux_classes:
                 for row in self.__session.query(aux_classes[rows]):
                     key = "{}.{}".format(row.__class__.__name__, row.id)
-                list_aux[key] = row
+                    list_aux[key] = row
         list_aux.pop('_sa_instance_state', None)
         return list_aux
 
