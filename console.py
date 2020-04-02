@@ -71,7 +71,6 @@ class HBNBCommand(cmd.Cmd):
                     v = int(v)"""
                 v = validate_value(v)
                 setattr(obj, k, v)
-
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
@@ -147,7 +146,7 @@ class HBNBCommand(cmd.Cmd):
         Exceptions:
             NameError: when there is no object taht has the name
         """
-        objects = storage.all(line)
+        objects = storage.all()
         my_list = []
         if not line:
             for key in objects:
