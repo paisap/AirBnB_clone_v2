@@ -6,6 +6,7 @@ from models.place import Place
 from models.base_model import BaseModel
 import pep8
 
+type_storage = os.getenv("HBNB_TYPE_STORAGE", "fs")
 
 class TestPlace(unittest.TestCase):
     """this will test the place class"""
@@ -13,7 +14,7 @@ class TestPlace(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-        cls.place = Place()
+        """cls.place = Place()
         cls.place.city_id = "1234-abcd"
         cls.place.user_id = "4321-dcba"
         cls.place.name = "Death Star"
@@ -24,7 +25,12 @@ class TestPlace(unittest.TestCase):
         cls.place.price_by_night = 10
         cls.place.latitude = 160.0
         cls.place.longitude = 120.0
-        cls.place.amenity_ids = ["1324-lksdjkl"]
+        cls.place.amenity_ids = ["1324-lksdjkl"]"""
+
+        cls.new_instance = (city_id="1001", user_id="1002",
+            name="The room", description="nice", number_rooms=1,
+            number_bathrooms=1, max_guest=2, price_by_night=190,
+            latitude=15.5, logituded=22.22)
 
     @classmethod
     def teardown(cls):
