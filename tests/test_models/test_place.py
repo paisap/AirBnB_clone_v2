@@ -6,7 +6,6 @@ from models.place import Place
 from models.base_model import BaseModel
 import pep8
 
-type_storage = os.getenv("HBNB_TYPE_STORAGE", "fs")
 
 class TestPlace(unittest.TestCase):
     """this will test the place class"""
@@ -14,15 +13,23 @@ class TestPlace(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """set up for test"""
-        cls.new_instance = Place(city_id="1001", user_id="1002",
-            name="The room", description="nice", number_rooms=1,
-            number_bathrooms=1, max_guest=2, price_by_night=190,
-            latitude=15.5, logituded=22.22)
+        cls.place = Place()
+        cls.place.city_id = "1234-abcd"
+        cls.place.user_id = "4321-dcba"
+        cls.place.name = "Death Star"
+        cls.place.description = "UNLIMITED POWER!!!!!"
+        cls.place.number_rooms = 1000000
+        cls.place.number_bathrooms = 1
+        cls.place.max_guest = 607360
+        cls.place.price_by_night = 10
+        cls.place.latitude = 160.0
+        cls.place.longitude = 120.0
+        cls.place.amenity_ids = ["1324-lksdjkl"]
 
     @classmethod
     def teardown(cls):
         """at the end of the test this will tear it down"""
-        del cls.new_instance
+        del cls.place
 
     def tearDown(self):
         """teardown"""
@@ -31,153 +38,63 @@ class TestPlace(unittest.TestCase):
         except Exception:
             pass
 
-    def test_inheritance(self):
-        """Tests inheritance"""
-        self.assertIsInsatance(self.new_instance, BaseModel)
- 
     def test_pep8_Place(self):
         """Tests pep8 style"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/place.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    def test_table_name(self):
-        """
-            Check the table name
-        """
-        self.assertEqual(self.new_instance.__tablename__, 'places')
+    def test_checking_for_docstring_Place(self):
+        """checking for docstrings"""
+        self.assertIsNotNone(Place.__doc__)
 
     def test_attributes_Place(self):
         """chekcing if amenity have attributes"""
-        self.assertTrue('id' in self.new_instance.__dict__)
-        self.assertTrue('created_at' in self.new_instance.__dict__)
-        self.assertTrue('updated_at' in self.new_instance.__dict__)
-        self.assertTrue('city_id' in self.new_instance.__dict__)
-        self.assertTrue('user_id' in self.new_instance.__dict__)
-        self.assertTrue('name' in self.new_instance.__dict__)
-        self.assertTrue('description' in self.new_instance.__dict__)
-        self.assertTrue('number_rooms' in self.new_instance.__dict__)
-        self.assertTrue('number_bathrooms' in self.new_instance.__dict__)
-        self.assertTrue('max_guest' in self.new_instance.__dict__)
-        self.assertTrue('price_by_night' in self.new_instance.__dict__)
-        self.assertTrue('latitude' in self.new_instance.__dict__)
-        self.assertTrue('longitude' in self.new_instance.__dict__)
-        self.assertTrue('amenity_ids' in self.new_instance.__dict__)
+        self.assertTrue('id' in self.place.__dict__)
+        self.assertTrue('created_at' in self.place.__dict__)
+        self.assertTrue('updated_at' in self.place.__dict__)
+        self.assertTrue('city_id' in self.place.__dict__)
+        self.assertTrue('user_id' in self.place.__dict__)
+        self.assertTrue('name' in self.place.__dict__)
+        self.assertTrue('description' in self.place.__dict__)
+        self.assertTrue('number_rooms' in self.place.__dict__)
+        self.assertTrue('number_bathrooms' in self.place.__dict__)
+        self.assertTrue('max_guest' in self.place.__dict__)
+        self.assertTrue('price_by_night' in self.place.__dict__)
+        self.assertTrue('latitude' in self.place.__dict__)
+        self.assertTrue('longitude' in self.place.__dict__)
+        self.assertTrue('amenity_ids' in self.place.__dict__)
 
     def test_is_subclass_Place(self):
         """test if Place is subclass of Basemodel"""
-        self.assertTrue(issubclass(self.new_instance.__class__, BaseModel), True)
+        self.assertTrue(issubclass(self.place.__class__, BaseModel), True)
 
     def test_attribute_types_Place(self):
         """test attribute type for Place"""
-        self.assertEqual(self.new_instance.city_id), str)
-        self.assertEqual(type(self.new_instance.user_id), str)
-        self.assertEqual(type(self.new_instance.name), str)
-        self.assertEqual(type(self.new_instance.description), str)
-        self.assertEqual(type(self.new_instance.number_rooms), int)
-        self.assertEqual(type(self.new_instance.number_bathrooms), int)
-        self.assertEqual(type(self.new_instance.max_guest), int)
-        self.assertEqual(type(self.new_instance.price_by_night), int)
-        self.assertEqual(type(self.new_instance.latitude), float)
-        self.assertEqual(type(self.new_instance.longitude), float)
-        self.assertEqual(type(self.new_instance.amenity_ids), list)
+        self.assertEqual(type(self.place.city_id), str)
+        self.assertEqual(type(self.place.user_id), str)
+        self.assertEqual(type(self.place.name), str)
+        self.assertEqual(type(self.place.description), str)
+        self.assertEqual(type(self.place.number_rooms), int)
+        self.assertEqual(type(self.place.number_bathrooms), int)
+        self.assertEqual(type(self.place.max_guest), int)
+        self.assertEqual(type(self.place.price_by_night), int)
+        self.assertEqual(type(self.place.latitude), float)
+        self.assertEqual(type(self.place.longitude), float)
+        self.assertEqual(type(self.place.amenity_ids), list)
 
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_amenity_atr(self):
-        self.assertTrue("amenity_ids" in self.new_instance.__dir__())
+    @unittest.skipIf(
+        os.getenv('HBNB_TYPE_STORAGE') == 'db',
+        "This test only work in Filestorage")
+    def test_save_Place(self):
+        """test if the save works"""
+        self.place.save()
+        self.assertNotEqual(self.place.created_at, self.place.updated_at)
 
-    @unittest.skipIf(type_storage != "db", "Testing database")
-    def test_place_amenity_dbattrb(self):
-        self.assertTrue("amenities" in self.new_instance.__dir__())
-        self.assertTrue("reviews" in self.new_instance.__dir__())
+    def test_to_dict_Place(self):
+        """test if dictionary works"""
+        self.assertEqual('to_dict' in dir(self.place), True)
 
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_longitude(self):
-        '''
-            Test the type of longitude.
-        '''
-        longitude = getattr(self.new_instance, "longitude")
-        self.assertIsInstance(longitude, float)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_latitude(self):
-        '''
-            Test the type of latitude
-        '''
-        latitude = getattr(self.new_instance, "latitude")
-        self.assertIsInstance(latitude, float)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_amenity(self):
-        '''
-            Test the type of latitude
-        '''
-        amenity = getattr(self.new_instance, "amenity_ids")
-        self.assertIsInstance(amenity, list)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_price_by_night(self):
-        '''
-            Test the type of price_by_night
-        '''
-        price_by_night = getattr(self.new_instance, "price_by_night")
-        self.assertIsInstance(price_by_night, int)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_max_guest(self):
-        '''
-            Test the type of max_guest
-        '''
-        max_guest = getattr(self.new_instance, "max_guest")
-        self.assertIsInstance(max_guest, int)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_number_bathrooms(self):
-        '''
-            Test the type of number_bathrooms
-        '''
-        number_bathrooms = getattr(self.new_instance, "number_bathrooms")
-        self.assertIsInstance(number_bathrooms, int)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_number_rooms(self):
-        '''
-            Test the type of number_bathrooms
-        '''
-        number_rooms = getattr(self.new_instance, "number_rooms")
-        self.assertIsInstance(number_rooms, int)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_description(self):
-        '''
-            Test the type of description
-        '''
-        description = getattr(self.new_instance, "description")
-        self.assertIsInstance(description, str)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_name(self):
-        '''
-            Test the type of name
-        '''
-        name = getattr(self.new_instance, "name")
-        self.assertIsInstance(name, str)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_user_id(self):
-        '''
-            Test the type of user_id
-        '''
-        user_id = getattr(self.new_instance, "user_id")
-        self.assertIsInstance(user_id, str)
-
-    @unittest.skipIf(type_storage == "db", "Testing database")
-    def test_type_city_id(self):
-        '''
-            Test the type of city_id
-        '''
-        city_id = getattr(self.new_instance, "city_id")
-        self.assertIsInstance(city_id, str)
 
 if __name__ == "__main__":
     unittest.main()
