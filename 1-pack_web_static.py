@@ -3,6 +3,7 @@ from fabric.api import run
 from fabric.api import local
 import datetime
 
+
 def do_pack():
     """ Compress before sending """
     local("sudo mkdir -p versions")
