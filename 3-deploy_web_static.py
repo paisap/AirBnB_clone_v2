@@ -43,5 +43,5 @@ def deploy():
     if the_path is None:
         the_path = do_pack()
     if the_path is None:
-        reutn False
+        return False
     return do_deploy(the_path)
