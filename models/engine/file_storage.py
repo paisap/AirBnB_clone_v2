@@ -28,8 +28,12 @@ class FileStorage:
         if cls is not None:
             aux = {}
             for key, values in self.__objects.items():
-                if cls == values.__class__:
-                    aux[key] = values
+                if type(cls) is str:
+                    if cls == values.__class__.__name__:
+                        aux[key] = values
+                else:
+                    if cls == values.__class__:
+                        aux[key] = values
             return aux
         else:
             return self.__objects

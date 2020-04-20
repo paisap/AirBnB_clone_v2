@@ -16,8 +16,7 @@ from shlex import split
 def validate_value(value):
     if '"' in value:
         value = value.replace('\"', '')
-        if '_' in value:
-            value = value.replace('_', ' ')
+        value = value.replace('_', ' ')
     elif '.' in value:
         value = float(value)
     else:
@@ -53,24 +52,17 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
+            
             my_list = line.split(" ")
-            """if len(my_list) < 2:
-                raise IndexError()"""
             obj = eval("{}()".format(my_list[0]))
             key_value = my_list[1:]
+
             for pair in key_value:
                 el = pair.split('=')
                 k, v = el[0], el[1]
-
-                """if '"' in v:
-                    v = v.replace('\"', '')
-                    if '_' in v: v = v.replace('_', ' ')
-                elif '.' in v:
-                    v = float(v)
-                else:
-                    v = int(v)"""
                 v = validate_value(v)
                 setattr(obj, k, v)
+
             obj.save()
             print("{}".format(obj.id))
         except SyntaxError:
