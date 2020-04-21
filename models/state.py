@@ -3,7 +3,7 @@
 from models.base_model import BaseModel, Base
 from models.city import City
 import models
-from sqlalchemy import Column, Integer, String, Sequence
+from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 import os
 
@@ -16,7 +16,7 @@ class State(BaseModel, Base):
     __tablename__ = 'states'
     if os.environ.get("HBNB_TYPE_STORAGE") == "db":
         name = Column(String(128), nullable=False)
-        cities = relationship('City', backref='state', cascade='delete')
+        cities = relationship("City", backref='state', cascade='delete')
     else:
         name = ""
 
@@ -27,8 +27,7 @@ class State(BaseModel, Base):
             """
             cities = models.storage.all(City)
             instance_list = []
-            if cities is not None:
-                for k, v in cities.items():
-                    if v.id == self.id:
+            for key in cities.values():
+                    if key.states.id == self.id:
                         instance_list.append(v)
             return instance_list

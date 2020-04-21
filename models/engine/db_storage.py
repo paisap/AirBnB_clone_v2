@@ -2,7 +2,7 @@
 """ New engine """
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import create_engine, MetaData
-from models.base_model import Base, BaseModel
+from models.base_model import BaseModel, Base
 import os
 import json
 from models.place import Place
@@ -45,8 +45,8 @@ class DBStorage:
                 for row in self.__session.query(aux_classes[rows]):
                     key = "{}.{}".format(row.__class__.__name__, row.id)
                     list_aux[key] = row
-        if "_sa_instance_state" in list_aux:
-            del list_aux['_sa_instance_state']
+        #if "_sa_instance_state" in list_aux:
+            #del list_aux['_sa_instance_state']
         return list_aux
 
     def new(self, obj):
