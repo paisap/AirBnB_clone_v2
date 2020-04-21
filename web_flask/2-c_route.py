@@ -6,16 +6,19 @@ starts a Flask web application
 from flask import Flask, request
 app = Flask(__name__)
 
+
 @app.route('/c/<text>', strict_slashes=False)
 def the_c(text):
     """ documentation"""
     text = text.replace("_", " ")
     return "C {}".format(text)
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """ hola"""
     return 'HBNB'
+
 
 @app.route('/', strict_slashes=False)
 def index():
