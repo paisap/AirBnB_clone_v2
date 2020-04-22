@@ -19,6 +19,7 @@ class State(BaseModel, Base):
         cities = relationship("City", cascade="delete", backref="state")
     else:
         name = ""
+
         @property
         def cities(self):
             """returns a list of city"""
