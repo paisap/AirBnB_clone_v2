@@ -22,13 +22,15 @@ class Place(BaseModel, Base):
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
-    __tablename__ = "places"
-    place_amenity = Table("place_amenity", Base.metadata,
-                          Column('place_id', String(60), ForeignKey("places.id"),
-                                 nullable=False),
+
+    __tablename__ = 'places'
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
                           Column('amenity_id', String(60),
-                                 ForeignKey('amenities.id'), nullable=False),
-                                            primary_key=True)
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
 
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)

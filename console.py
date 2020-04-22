@@ -52,7 +52,6 @@ class HBNBCommand(cmd.Cmd):
         try:
             if not line:
                 raise SyntaxError()
-            
             my_list = line.split(" ")
             obj = eval("{}()".format(my_list[0]))
             key_value = my_list[1:]
