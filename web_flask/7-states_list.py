@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 @app.teardown_appcontext
-def close_storage():
+def close_storage(self):
     """ -.... """
     storage.close()
 
